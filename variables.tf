@@ -1,7 +1,7 @@
 variable "region" {
   description = "The region in which resources will be created"
   type        = string
-  default     = "us-south"
+  default     = "ca-tor"
 }
 
 variable "ibmcloud_api_key" {
@@ -10,22 +10,20 @@ variable "ibmcloud_api_key" {
   sensitive   = true
 }
 
-variable "project_prefix" {
-  description = "The prefix to use for all resources in this project"
-  type        = string
-  default     = ""
-}
-
 variable "existing_resource_group" {
   description = "Name of an existing Resource Group to use for resources. If not set, a new Resource Group will be created."
   type        = string
   default     = null
 }
 
-variable "allow_ssh_from" {
+variable "allow_ssh_homelab" {
   description = "An IP or CIDR block to allow SSH access from on the bastion host"
   type        = string
-  default     = "0.0.0.0/0"
+}
+
+variable "allow_ssh_do_instance" {
+  description = "IP of remote linux instance to allow SSH access from on the bastion host"
+  type        = string
 }
 
 variable "owner" {

@@ -16,21 +16,16 @@ variable "existing_resource_group" {
   default     = null
 }
 
-variable "allow_ssh_homelab" {
-  description = "An IP or CIDR block to allow SSH access from on the bastion host"
+variable "allow_ssh_from" {
+  description = "An IP or CIDR block to allow SSH access from. This will be added to the default VPC security group."
   type        = string
-}
-
-variable "allow_ssh_do_instance" {
-  description = "IP of remote linux instance to allow SSH access from on the bastion host"
-  type        = string
+  default     = "0.0.0.0/0"
 }
 
 variable "owner" {
   description = "Project owner or identifier. This is used as a tag on all supported resources."
   type        = string
 }
-
 
 variable "classic_access" {
   description = "Allow classic access to the VPC."
@@ -48,18 +43,6 @@ variable "existing_ssh_key" {
   description = "The name of an existing SSH key to use. If not specified, a new key will be created."
   type        = string
   default     = ""
-}
-
-variable "instance_profile" {
-  description = "The name of an existing instance profile to use. You can list available instance profiles with the command 'ibmcloud is instance-profiles'."
-  type        = string
-  default     = "cx2-2x4"
-}
-
-variable "image_name" {
-  description = "The name of an existing OS image to use. You can list available images with the command 'ibmcloud is images'."
-  type        = string
-  default     = "ibm-ubuntu-22-04-1-minimal-amd64-3"
 }
 
 variable "allow_ip_spoofing" {

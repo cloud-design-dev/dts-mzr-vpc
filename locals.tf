@@ -1,5 +1,5 @@
 locals {
-  prefix = "rst-${random_string.prefix.result}-lab"
+  prefix = "${random_string.prefix.result}-demo"
 
   tags = [
     "owner:${var.owner}",

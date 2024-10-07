@@ -51,85 +51,45 @@ resource "ibm_is_subnet" "backend_subnets" {
   total_ipv4_address_count = "256"
 }
 
-
-
-resource "ibm_is_instance" "bastion" {
-  name           = "${local.prefix}-bastion"
-  vpc            = ibm_is_vpc.vpc.id
-  image          = data.ibm_is_image.base.id
-  profile        = var.instance_profile
-  resource_group = module.resource_group.resource_group_id
-  metadata_service {
-    enabled            = true
-    protocol           = "https"
-    response_hop_limit = 5
-  }
-
-  boot_volume {
-    auto_delete_volume = true
-    name               = "${local.prefix}-bastion-boot-volume"
-  }
-
-  primary_network_attachment {
-    name = "${local.prefix}-primary-att"
-    virtual_network_interface {
-      id = ibm_is_virtual_network_interface.bastion_vnic.id
-    }
-  }
-
-  zone = local.vpc_zones[0].zone
-  keys = [data.ibm_is_ssh_key.sshkey.id]
-  tags = concat(local.tags, ["zone:${local.vpc_zones[0].zone}"])
-}
-
-resource "ibm_is_floating_ip" "bastion" {
-  name           = "${local.prefix}-bastion-public-ip"
+resource "ibm_is_floating_ip" "zone_1" {
+  name           = "${local.prefix}-${local.vpc_zones[0].zone}-fip"
   resource_group = module.resource_group.resource_group_id
   zone           = local.vpc_zones[0].zone
   tags           = concat(local.tags, ["zone:${local.vpc_zones[0].zone}"])
 }
 
-resource "ibm_is_virtual_network_interface" "bastion_vnic" {
+resource "ibm_is_virtual_network_interface" "zone_1" {
   allow_ip_spoofing         = true
   auto_delete               = false
   enable_infrastructure_nat = true
-  name                      = "${local.prefix}-bastion-vnic"
+  name                      = "${local.prefix}-${local.vpc_zones[0].zone}-vnic"
   subnet                    = ibm_is_subnet.frontend_subnets.0.id
   resource_group            = module.resource_group.resource_group_id
-  security_groups           = [module.bastion_security_group.security_group_id]
+  security_groups           = [ibm_is_vpc.vpc.default_security_group]
   tags                      = concat(local.tags, ["zone:${local.vpc_zones[0].zone}"])
 }
 
 resource "ibm_is_virtual_network_interface_floating_ip" "vni_fip" {
-  virtual_network_interface = ibm_is_virtual_network_interface.bastion_vnic.id
-  floating_ip               = ibm_is_floating_ip.bastion.id
+  virtual_network_interface = ibm_is_virtual_network_interface.zone_1.id
+  floating_ip               = ibm_is_floating_ip.zone_1.id
 }
 
-resource "ibm_is_instance" "hashistack" {
-  count          = 5
-  name           = "${local.prefix}-hs-instance-${count.index + 1}"
-  vpc            = ibm_is_vpc.vpc.id
-  image          = data.ibm_is_image.base.id
-  profile        = var.instance_profile
-  resource_group = module.resource_group.resource_group_id
-  metadata_service {
-    enabled            = true
-    protocol           = "https"
-    response_hop_limit = 5
-  }
-
-  boot_volume {
-    auto_delete_volume = true
-    name               = "${local.prefix}-${count.index + 1}-boot-volume"
-  }
-
-  primary_network_interface {
-    subnet            = ibm_is_subnet.backend_subnets.0.id
-    allow_ip_spoofing = var.allow_ip_spoofing
-    security_groups   = [module.consul_security_group.security_group_id, module.nomad_security_group.security_group_id]
-  }
-
-  zone = local.vpc_zones[0].zone
-  keys = [data.ibm_is_ssh_key.sshkey.id]
-  tags = concat(local.tags, ["zone:${local.vpc_zones[0].zone}"])
+module "add_rules_to_default_vpc_security_group" {
+  depends_on                   = [ibm_is_vpc.vpc]
+  source                       = "terraform-ibm-modules/security-group/ibm"
+  add_ibm_cloud_internal_rules = true
+  use_existing_security_group  = true
+  existing_security_group_name = ibm_is_vpc.vpc.default_security_group_name
+  security_group_rules = [
+    {
+      name      = "allow-ssh-inbound"
+      direction = "inbound"
+      tcp = {
+        port_min = 22
+        port_max = 22
+      }
+      remote = var.allow_ssh_from
+    }
+  ]
+  tags = local.tags
 }

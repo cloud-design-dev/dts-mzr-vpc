@@ -50,14 +50,14 @@ No modules.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_crn"></a> [crn](#output\_crn) | n/a |
-| <a name="output_default_network_acl_id"></a> [default\_network\_acl\_id](#output\_default\_network\_acl\_id) | n/a |
-| <a name="output_default_routing_table_id"></a> [default\_routing\_table\_id](#output\_default\_routing\_table\_id) | n/a |
-| <a name="output_default_security_group_crn"></a> [default\_security\_group\_crn](#output\_default\_security\_group\_crn) | n/a |
-| <a name="output_default_security_group_id"></a> [default\_security\_group\_id](#output\_default\_security\_group\_id) | n/a |
-| <a name="output_id"></a> [id](#output\_id) | n/a |
-| <a name="output_local_vpc_zones"></a> [local\_vpc\_zones](#output\_local\_vpc\_zones) | n/a |
-| <a name="output_subnet_ids"></a> [subnet\_ids](#output\_subnet\_ids) | n/a |
-| <a name="output_subnet_zones"></a> [subnet\_zones](#output\_subnet\_zones) | n/a |
-| <a name="output_total_ipv4_address_count"></a> [total\_ipv4\_address\_count](#output\_total\_ipv4\_address\_count) | n/a |
+| <a name="output_default_network_acl_id"></a> [default\_network\_acl\_id](#output\_default\_network\_acl\_id) | ID of the Default Access Control List for the VPC |
+| <a name="output_default_routing_table_id"></a> [default\_routing\_table\_id](#output\_default\_routing\_table\_id) | ID of the Default Routing Table for the VPC |
+| <a name="output_default_security_group_crn"></a> [default\_security\_group\_crn](#output\_default\_security\_group\_crn) | Cloud Resource Name (CRN) of the Default Security Group for the VPC |
+| <a name="output_default_security_group_id"></a> [default\_security\_group\_id](#output\_default\_security\_group\_id) | ID of the Default Security Group for the VPC |
+| <a name="output_local_vpc_zones"></a> [local\_vpc\_zones](#output\_local\_vpc\_zones) | Public gateway zone mapping to actual IBM Cloud VPC zone names |
+| <a name="output_vpc_address_prefix_ids"></a> [vpc\_address\_prefix\_ids](#output\_vpc\_address\_prefix\_ids) | IBM Cloud VPC Address Prefix IDs |
+| <a name="output_vpc_crn"></a> [vpc\_crn](#output\_vpc\_crn) | Cloud Resource Name (CRN) of the IBM Cloud VPC |
+| <a name="output_vpc_id"></a> [vpc\_id](#output\_vpc\_id) | ID of the IBM Cloud VPC |
+| <a name="output_vpc_public_gateway_ids"></a> [vpc\_public\_gateway\_ids](#output\_vpc\_public\_gateway\_ids) | ID of the deployed VPC Public Gateways |
+| <a name="output_vpc_subnet_ids"></a> [vpc\_subnet\_ids](#output\_vpc\_subnet\_ids) | ID of the deployed VPC Subnets |
 <!-- END_TF_DOCS -->

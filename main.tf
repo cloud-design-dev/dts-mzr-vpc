@@ -54,6 +54,12 @@ resource "ibm_is_vpc" "lab" {
   }
 }
 
+# resource "null_resource" "prefix_dependency" {
+#   depends_on = [
+#     ibm_is_vpc_address_prefix.prefix
+#   ]
+# }
+
 
 resource "ibm_is_vpc_address_prefix" "prefix" {
   count = var.use_custom_prefix != false ? 3 : 0
@@ -105,6 +111,6 @@ resource "ibm_is_subnet" "lab" {
     ignore_changes = [tags]
   }
   depends_on = [
-    ibm_is_public_gateway.lab
+    null_resource.prefix_dependency, ibm_is_public_gateway.lab
   ]
 }

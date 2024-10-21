@@ -19,6 +19,11 @@ resource "tls_private_key" "ssh" {
   rsa_bits  = 4096
 }
 
+resource "time_static" "deploy_time" {
+  # Leave triggers empty to prevent the timestamp from changing
+  triggers = {}
+}
+
 resource "ibm_is_ssh_key" "generated_key" {
   count          = var.existing_ssh_key != "" ? 0 : 1
   name           = "${local.prefix}-${var.region}-sshkey"

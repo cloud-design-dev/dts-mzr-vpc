@@ -65,3 +65,9 @@ variable "tags" {
   type        = list(string)
   default     = []
 }
+
+variable "subnet_size" {
+  description = "Number of IPs in the created subnet aka total_ipv4_address_count"
+  type        = string
+  default = "128"
+}

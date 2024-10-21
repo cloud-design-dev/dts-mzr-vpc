@@ -46,6 +46,20 @@ This module deploys a Multizone Region (MZR) VPC in IBM Cloud with the following
 1) This example shows how to deploy a VPC with public gateways in zones 1 and 2. Additionally as no `project prefix` is provided, a random string will be generated.
 
 ```hcl
+terraform {
+  required_providers {
+    ibm = {
+      source  = "IBM-Cloud/ibm"
+      version = "1.70.1"
+    }
+  }
+}
+
+provider "ibm" {
+  ibmcloud_api_key = var.ibmcloud_api_key
+  region           = var.ibmcloud_region
+}
+
 module "resource_group" {
   source                       = "terraform-ibm-modules/resource-group/ibm"
   version                      = "1.1.5"
@@ -69,6 +83,27 @@ module "default_vpc" {
 2) This example shows how to deploy a VPC with custom address prefixes and a project prefix. Additionally, public gateways are not created in any of the zones. 
 
 ```hcl
+terraform {
+  required_providers {
+    ibm = {
+      source  = "IBM-Cloud/ibm"
+      version = "1.70.1"
+    }
+  }
+}
+
+provider "ibm" {
+  ibmcloud_api_key = var.ibmcloud_api_key
+  region           = var.ibmcloud_region
+}
+
+module "resource_group" {
+  source                       = "terraform-ibm-modules/resource-group/ibm"
+  version                      = "1.1.5"
+  resource_group_name          = var.existing_resource_group == null ? "${var.prefix}-resource-group" : null
+  existing_resource_group_name = var.existing_resource_group
+}
+
 module "custom_vpc" {
   source                  = "git::https://github.com/cloud-design-dev/dts-mzr-vpc.git"
   existing_resource_group = var.existing_resource_group

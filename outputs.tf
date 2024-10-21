@@ -38,6 +38,11 @@ output "vpc_subnet_ids" {
   value       = [for subnet in ibm_is_subnet.lab : subnet.id]
 }
 
+output "vpc_subnet_cidrs" {
+  description = "CIDR blocl of the deployed VPC Subnets"
+  value       = [for subnet in ibm_is_subnet.lab : subnet.ipv4_cidr_block]
+}
+
 output "vpc_public_gateway_ids" {
   description = "ID of the deployed VPC Public Gateways"
   value       = [for gateway in ibm_is_public_gateway.lab : gateway.id]

@@ -1,46 +1,17 @@
 # Overview
 
-This module deploys a VPC in IBM Cloud with the following characteristics:
+This module deploys a Multizone Region (MZR) VPC in IBM Cloud with the following characteristics:
 
-- VPC with 3 zones
-- Public gateways in any of the 3 zones based on the input
-- Subnets in all 3 zones. If the zone has a public gagteway, the subnet will be attached to it
-- Classic access enabled/disabled based on the input
-- Can create an SSH key or use an existing one
-- Can create a new resource group or use an existing one
-- Ability to support custom address prefixes for the VPC
+- Ability to deploy a VPC with custom address prefixes
+- Ability to deploy a VPC with public gateways in any of the three zones
+- Ability to deploy a subnet in each regional zone
 
 ## Diagram
 
 ![Overview of deployed resources](./mzr-vpc-module.png)
 
-Things that have not been implemented yet, but I am working on:
 
-- [ ] Ability to enable Flowlogs for a given VPC. This requires a cloud object storage instance as well as the buckets to store the logs. This also requires a service to service authorization between the 2 services. I have the logic in place, but I need to test it out.
-
-## Get Started
-
-### Prerequisites
-
-- Terraform installed locally
-- IBM Cloud API Key
-
-### Steps
-
-1. Clone the repository
-
-```shell
-git clone https://github.ibm.com/IBMCloudTech/ibmcloud-mzr-vpc.git
-cd ibmcloud-mzr-vpc
-```
-
-2. Copy `terraform-tfvars-example` to `terraform.tfvars` and fill in the required values
-
-```shell
-cp terraform-tfvars-example terraform.tfvars
-```
-
-## Inputs
+## Module Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
@@ -55,21 +26,7 @@ cp terraform-tfvars-example terraform.tfvars
 | <a name="input_use_public_gateways"></a> [use\_public\_gateways](#input\_use\_public\_gateways) | Create a public gateway in any of the three zones set to `true`. | <pre>object({<br>    zone-1 = optional(bool)<br>    zone-2 = optional(bool)<br>    zone-3 = optional(bool)<br>  })</pre> | <pre>{<br>  "zone-1": true,<br>  "zone-2": false,<br>  "zone-3": false<br>}</pre> | no |
 
 
-3. Initialize the Terraform workspace
-
-```shell
-terraform init
-```
-
-4. Plan and apply the Terraform configuration
-
-```shell
-terraform plan -out "$(terraform workspace show).tfplan"
-
-terraform apply "$(terraform workspace show).tfplan"
-```
-
-## Outputs
+## Module Outputs
 
 | Name | Description |
 |------|-------------|

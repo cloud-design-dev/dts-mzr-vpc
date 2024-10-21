@@ -1,9 +1,3 @@
-#variable "ibmcloud_api_key" {
-#  description = "IBM Cloud API key to use for deployment."
-#  type        = string
-#  sensitive   = true
-#}
-
 variable "region" {
   description = "The IBM Cloud region where the VPC and related resources will be deployed."
   type        = string
@@ -11,13 +5,7 @@ variable "region" {
 }
 
 variable "project_prefix" {
-  description = "Prefix to assign to all deployed resources. If not provided a randome string will be generated."
-  type        = string
-  default     = ""
-}
-
-variable "existing_ssh_key" {
-  description = "The name of an existing SSH key to use for provisioning resources. If one is not provided, a new key will be generated."
+  description = "Prefix to assign to all deployed resources. If not provided a random string will be generated."
   type        = string
   default     = ""
 }
@@ -31,7 +19,7 @@ variable "use_public_gateways" {
   })
   default = {
     zone-1 = true
-    zone-2 = true
+    zone-2 = false
     zone-3 = false
   }
   validation {
@@ -44,8 +32,8 @@ variable "use_public_gateways" {
   }
 }
 
-variable "existing_resource_group" {
-  description = "The name of an existing resource group where the VPC will be created. If not provided a new Resource group will be created."
+variable "resource_group_id" {
+  description = "The ID of the resource group to use for deployed resources."
   type        = string
   default     = ""
 }
@@ -72,4 +60,10 @@ variable "use_custom_prefix" {
   description = "Indicates if custom address prefixes will be used."
   type        = bool
   default     = false
+}
+
+variable "tags" {
+  description = "Tags to assign to all resources."
+  type        = list(string)
+  default     = []
 }

@@ -1,7 +1,5 @@
 locals {
-  prefix      = var.project_prefix != "" ? var.project_prefix : "${random_string.lab_prefix.0.result}"
-  ssh_key_ids = var.existing_ssh_key != "" ? [data.ibm_is_ssh_key.sshkey[0].id] : [ibm_is_ssh_key.generated_key[0].id]
-  #   address_prefix_management = var.address_prefix != null ? "manual" : "auto"
+  prefix                    = var.project_prefix != "" ? var.project_prefix : "${random_string.lab_prefix.0.result}"
   address_prefix_management = var.use_custom_prefix != false ? "manual" : "auto"
   # Retrieve the list of zones from the data source
   zones        = data.ibm_is_zones.regional.zones
@@ -22,15 +20,10 @@ locals {
     if use_pg == true
   ]
 
-  #deploy_timestamp = formatdate("YYYYMMDD-HHmmAA", time_static.deploy_time.unix)
-   deploy_timestamp = formatdate("YYYYMMDD-HHmm", time_static.deploy_time.rfc3339)
+  deploy_timestamp = formatdate("YYYYMMDD-HHmm", time_static.deploy_time.rfc3339)
 
   tags = [
-    "provider:ibm",
-    "region:${var.region}",
     "created_at:${local.deploy_timestamp}",
-    "project:${local.prefix}",
     "owner:${var.owner_tag}",
   ]
-
 }

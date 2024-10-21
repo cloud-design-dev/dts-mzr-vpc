@@ -1,44 +1,36 @@
-# Overview
+<!-- BEGIN_TF_DOCS -->
+## Requirements
 
-This module deploys a VPC in IBM Cloud with the following characteristics:
+| Name | Version |
+|------|---------|
+| <a name="requirement_ibm"></a> [ibm](#requirement\_ibm) | 1.70.0 |
+| <a name="requirement_time"></a> [time](#requirement\_time) | ~> 0.7.2 |
 
-- VPC with 3 zones
-- Public gateways in any of the 3 zones based on the input
-- Subnets in all 3 zones. If the zone has a public gagteway, the subnet will be attached to it
-- Classic access enabled/disabled based on the input
-- Can create an SSH key or use an existing one
-- Can create a new resource group or use an existing one
-- Ability to support custom address prefixes for the VPC
+## Providers
 
-## Diagram
+| Name | Version |
+|------|---------|
+| <a name="provider_ibm"></a> [ibm](#provider\_ibm) | 1.70.0 |
+| <a name="provider_null"></a> [null](#provider\_null) | 3.2.3 |
+| <a name="provider_random"></a> [random](#provider\_random) | 3.6.3 |
+| <a name="provider_time"></a> [time](#provider\_time) | 0.7.2 |
 
-![Overview of deployed resources](./mzr-vpc-module.png)
+## Modules
 
-Things that have not been implemented yet, but I am working on:
+No modules.
 
-- [ ] Ability to enable Flowlogs for a given VPC. This requires a cloud object storage instance as well as the buckets to store the logs. This also requires a service to service authorization between the 2 services. I have the logic in place, but I need to test it out.
+## Resources
 
-## Get Started
-
-### Prerequisites
-
-- Terraform installed locally
-- IBM Cloud API Key
-
-### Steps
-
-1. Clone the repository
-
-```shell
-git clone https://github.ibm.com/IBMCloudTech/ibmcloud-mzr-vpc.git
-cd ibmcloud-mzr-vpc
-```
-
-2. Copy `terraform-tfvars-example` to `terraform.tfvars` and fill in the required values
-
-```shell
-cp terraform-tfvars-example terraform.tfvars
-```
+| Name | Type |
+|------|------|
+| [ibm_is_public_gateway.lab](https://registry.terraform.io/providers/IBM-Cloud/ibm/1.70.0/docs/resources/is_public_gateway) | resource |
+| [ibm_is_subnet.lab](https://registry.terraform.io/providers/IBM-Cloud/ibm/1.70.0/docs/resources/is_subnet) | resource |
+| [ibm_is_vpc.lab](https://registry.terraform.io/providers/IBM-Cloud/ibm/1.70.0/docs/resources/is_vpc) | resource |
+| [ibm_is_vpc_address_prefix.prefix](https://registry.terraform.io/providers/IBM-Cloud/ibm/1.70.0/docs/resources/is_vpc_address_prefix) | resource |
+| [null_resource.prefix_dependency](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
+| [random_string.lab_prefix](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) | resource |
+| [time_static.deploy_time](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/static) | resource |
+| [ibm_is_zones.regional](https://registry.terraform.io/providers/IBM-Cloud/ibm/1.70.0/docs/data-sources/is_zones) | data source |
 
 ## Inputs
 
@@ -54,21 +46,6 @@ cp terraform-tfvars-example terraform.tfvars
 | <a name="input_use_custom_prefix"></a> [use\_custom\_prefix](#input\_use\_custom\_prefix) | Indicates if custom address prefixes will be used. | `bool` | `false` | no |
 | <a name="input_use_public_gateways"></a> [use\_public\_gateways](#input\_use\_public\_gateways) | Create a public gateway in any of the three zones set to `true`. | <pre>object({<br>    zone-1 = optional(bool)<br>    zone-2 = optional(bool)<br>    zone-3 = optional(bool)<br>  })</pre> | <pre>{<br>  "zone-1": true,<br>  "zone-2": false,<br>  "zone-3": false<br>}</pre> | no |
 
-
-3. Initialize the Terraform workspace
-
-```shell
-terraform init
-```
-
-4. Plan and apply the Terraform configuration
-
-```shell
-terraform plan -out "$(terraform workspace show).tfplan"
-
-terraform apply "$(terraform workspace show).tfplan"
-```
-
 ## Outputs
 
 | Name | Description |
@@ -83,3 +60,4 @@ terraform apply "$(terraform workspace show).tfplan"
 | <a name="output_subnet_ids"></a> [subnet\_ids](#output\_subnet\_ids) | n/a |
 | <a name="output_subnet_zones"></a> [subnet\_zones](#output\_subnet\_zones) | n/a |
 | <a name="output_total_ipv4_address_count"></a> [total\_ipv4\_address\_count](#output\_total\_ipv4\_address\_count) | n/a |
+<!-- END_TF_DOCS -->

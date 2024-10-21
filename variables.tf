@@ -1,7 +1,6 @@
 variable "region" {
   description = "The IBM Cloud region where the VPC and related resources will be deployed."
   type        = string
-  default     = ""
 }
 
 variable "project_prefix" {
@@ -35,7 +34,6 @@ variable "use_public_gateways" {
 variable "resource_group_id" {
   description = "The ID of the resource group to use for deployed resources."
   type        = string
-  default     = ""
 }
 
 variable "classic_access" {

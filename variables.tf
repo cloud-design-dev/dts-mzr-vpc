@@ -1,8 +1,8 @@
-variable "ibmcloud_api_key" {
-  description = "IBM Cloud API key to use for deployment."
-  type        = string
-  sensitive   = true
-}
+#variable "ibmcloud_api_key" {
+#  description = "IBM Cloud API key to use for deployment."
+#  type        = string
+#  sensitive   = true
+#}
 
 variable "region" {
   description = "The IBM Cloud region where the VPC and related resources will be deployed."

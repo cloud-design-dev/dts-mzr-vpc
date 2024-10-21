@@ -22,7 +22,7 @@ locals {
     if use_pg == true
   ]
 
-  deploy_timestamp = formatdate("YYYYMMDD-HHmmAA", time_static.deploy_time.unix_seconds)
+  deploy_timestamp = formatdate("YYYYMMDD-HHmmAA", time_static.deploy_time.unix)
 
   tags = [
     "provider:ibm",

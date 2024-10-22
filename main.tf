@@ -1,24 +1,16 @@
-resource "random_string" "lab_prefix" {
-  count   = var.project_prefix != "" ? 0 : 1
-  length  = 4
-  special = false
-  numeric = false
-  upper   = false
-}
-
 resource "time_static" "deploy_time" {
   # Leave triggers empty to prevent the timestamp from changing
   triggers = {}
 }
 
 resource "ibm_is_vpc" "lab" {
-  name                        = "${local.prefix}-vpc"
+  name                        = "${var.prefix}-vpc"
   resource_group              = var.resource_group_id
   classic_access              = var.classic_access
   address_prefix_management   = local.address_prefix_management
-  default_network_acl_name    = "${local.prefix}-default-vpc-nacl"
-  default_security_group_name = "${local.prefix}-default-vpc-sg"
-  default_routing_table_name  = "${local.prefix}-default-vpc-rt"
+  default_network_acl_name    = "${var.prefix}-default-vpc-nacl"
+  default_security_group_name = "${var.prefix}-default-vpc-sg"
+  default_routing_table_name  = "${var.prefix}-default-vpc-rt"
   tags                        = concat(var.tags, local.tags)
 
   lifecycle {
@@ -29,7 +21,7 @@ resource "ibm_is_vpc" "lab" {
 resource "ibm_is_vpc_address_prefix" "prefix" {
   count = var.use_custom_prefix != false ? 3 : 0
 
-  name       = "${local.prefix}-address-prefix-${count.index}"
+  name       = "${var.prefix}-address-prefix-${count.index}"
   zone       = local.vpc_zones[count.index].zone
   vpc        = ibm_is_vpc.lab.id
   cidr       = cidrsubnet(var.address_prefix, 4, count.index)
@@ -45,7 +37,7 @@ resource "null_resource" "prefix_dependency" {
 resource "ibm_is_public_gateway" "lab" {
   for_each = toset(local.public_gateway_zones)
 
-  name           = "${local.prefix}-pubgw-${each.key}"
+  name           = "${var.prefix}-pubgw-${each.key}"
   resource_group = var.resource_group_id
   vpc            = ibm_is_vpc.lab.id
   zone           = each.key
@@ -63,7 +55,7 @@ resource "ibm_is_public_gateway" "lab" {
 resource "ibm_is_subnet" "lab" {
   for_each = toset(local.zones)
 
-  name                     = "${local.prefix}-subnet-${each.key}"
+  name                     = "${var.prefix}-subnet-${each.key}"
   resource_group           = var.resource_group_id
   vpc                      = ibm_is_vpc.lab.id
   zone                     = each.key

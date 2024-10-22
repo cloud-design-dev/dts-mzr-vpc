@@ -3,7 +3,7 @@ variable "region" {
   type        = string
 }
 
-variable "project_prefix" {
+variable "prefix" {
   description = "Prefix to assign to all deployed resources. If not provided a random string will be generated."
   type        = string
   default     = ""
@@ -42,7 +42,6 @@ variable "classic_access" {
   default     = false
 }
 
-# Work in progress, the logic for manual address prefix generation is not quite there yet
 variable "address_prefix" {
   description = "The address prefix to use if address_prefix_management is set to manual. This will be split in to three prefixes, one for each zone."
   type        = string

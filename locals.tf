@@ -1,5 +1,4 @@
 locals {
-  prefix                    = var.project_prefix != "" ? var.project_prefix : "${random_string.lab_prefix.0.result}"
   address_prefix_management = var.use_custom_prefix != false ? "manual" : "auto"
   # Retrieve the list of zones from the data source
   zones        = data.ibm_is_zones.regional.zones
